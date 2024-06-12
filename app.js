@@ -14,20 +14,28 @@ on(window, "resize", () => {
 });
 
 function onDragStart(event) {
-    const offsetX = event.clientX - shape.el.getBoundingClientRect().left;
-    const offsetY = event.clientY - shape.el.getBoundingClientRect().top;
-    function onMouseMove(event) {
-        let x = event.clientX - offsetX;
-        let y = event.clientY - offsetY;
+    const isTouchEvent = event.type === "touchstart";
+    const startX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+    const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+    const offsetX = startX - shape.el.getBoundingClientRect().left;
+    const offsetY = startY - shape.el.getBoundingClientRect().top;
+    function onMove(event) {
+        const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+        const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+        let x = moveX - offsetX;
+        let y = moveY - offsetY;
         x = clamp(x, 0, bounds.width - shape.width);
         y = clamp(y, 0, bounds.height - shape.height);
         shape.el.style.left = `${x}px`;
         shape.el.style.top = `${y}px`;
     }
-    on(document, "mousemove", onMouseMove);
-    on(document, "mouseup", () => {
-        off(document, "mousemove", onMouseMove);
-    }, { once: true });
+    function onDragEnd() {
+        off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
+        off(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd);
+    }
+    on(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
+    on(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd, { once: true });
 };
 
 on(shape.el, "mousedown", onDragStart);
+on(shape.el, "touchstart", onDragStart);
