@@ -1,5 +1,5 @@
 let shape = new Circle(qs("#shape"));
-let container = new Rectangle(innerWidth, innerHeight);
+let container = new Rectangle(0, 0, innerWidth, innerHeight);
 shape.container = container;
 
 on(window, "resize", () => {

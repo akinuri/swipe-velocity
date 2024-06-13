@@ -10,8 +10,8 @@ class Circle {
     }
     move(x, y) {
         if (this.container) {
-            x = clamp(x, 0, this.container.width - this.radius);
-            y = clamp(y, 0, this.container.height - this.radius);
+            x = clamp(x, this.container.x, this.container.x + this.container.width - this.radius);
+            y = clamp(y, this.container.y, this.container.y + this.container.height - this.radius);
         }
         this.x = x;
         this.y = y;
@@ -27,7 +27,13 @@ class Circle {
 }
 
 class Rectangle {
-    constructor(width, height) {
+    x = 0;
+    y = 0;
+    width = 0;
+    height = 0;
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
     }
