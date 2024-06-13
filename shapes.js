@@ -4,6 +4,7 @@ class Circle {
     x = 0;
     y = 0;
     container = null;
+    posLog = new Stack(2, true);
     constructor(el) {
         this.el = el;
         this.radius = el.clientWidth;
@@ -23,6 +24,30 @@ class Circle {
             x: this.x + this.radius,
             y: this.y + this.radius,
         }
+    }
+    logPos(x, y, time) {
+        time = time || performance.now();
+        this.posLog.push(
+            {x, y, time}
+        );
+    }
+    calcVel() {
+        let vel = {
+            mag : 0,
+            dir : 0,
+        };
+        let last = this.posLog.get(0);
+        let current = this.posLog.get(1);
+        if (last && current) {
+            const deltaTime = (current.time - last.time) / 1000;
+            const deltaX = current.x - last.x;
+            const deltaY = current.y - last.y;
+            const velX = deltaX / deltaTime;
+            const velY = deltaY / deltaTime;
+            vel.mag = getMagnitude(velX, velY);
+            vel.dir = calcRelAngleDegrees(last.x, -last.y, current.x, -current.y);
+        }
+        return vel;
     }
 }
 

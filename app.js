@@ -14,9 +14,7 @@ function onDragStart(event) {
     const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
     const offsetX = startX - shape.el.getBoundingClientRect().left;
     const offsetY = startY - shape.el.getBoundingClientRect().top;
-    let lastX = startX;
-    let lastY = startY;
-    let lastTime = performance.now();
+    shape.logPos(startX, startY);
     function onMove(event) {
         const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
@@ -25,23 +23,11 @@ function onDragStart(event) {
         shape.move(x, y);
         stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
         stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
-
-        const currentTime = performance.now();
-        const deltaTime = (currentTime - lastTime) / 1000;
-        const deltaX = moveX - lastX;
-        const deltaY = moveY - lastY;
-        
-        const velX = deltaX / deltaTime;
-        const velY = deltaY / deltaTime;
-        
-        let angle = calcRelAngleDegrees(lastX, -lastY, moveX, -moveY);
-        stats.vel.mag.textContent = getMagnitude(velX, velY).toFixed(1);
-        stats.vel.ang.textContent = angle.toFixed(1) + "°";
-        stats.vel.angIcon.style.setProperty("--rotate", angle + "deg");
-        
-        lastX = moveX;
-        lastY = moveY;
-        lastTime = currentTime;
+        shape.logPos(moveX, moveY);
+        let vel = shape.calcVel();
+        stats.vel.mag.textContent = vel.mag.toFixed(1);
+        stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
+        stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
     }
     function onDragEnd() {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
