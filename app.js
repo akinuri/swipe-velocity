@@ -1,16 +1,10 @@
-let shape = {
-    el : qs("#shape"),
-    width: qs("#shape").clientWidth,
-    height: qs("#shape").clientHeight,
-};
+let shape = new Circle(qs("#shape"));
 
-let bounds = {
-    width : innerWidth,
-    height : innerHeight,
-};
+let container = new Rectangle(innerWidth, innerHeight);
+
 on(window, "resize", () => {
-    bounds.width = innerWidth;
-    bounds.height = innerHeight;
+    container.width = innerWidth;
+    container.height = innerHeight;
 });
 
 function onDragStart(event) {
@@ -25,8 +19,8 @@ function onDragStart(event) {
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
         let x = moveX - offsetX;
         let y = moveY - offsetY;
-        x = clamp(x, 0, bounds.width - shape.width);
-        y = clamp(y, 0, bounds.height - shape.height);
+        x = clamp(x, 0, container.width - shape.radius);
+        y = clamp(y, 0, container.height - shape.radius);
         shape.el.style.left = `${x}px`;
         shape.el.style.top = `${y}px`;
     }
