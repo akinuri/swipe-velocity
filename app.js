@@ -10,10 +10,8 @@ on(window, "resize", () => {
 function onDragStart(event) {
     event.preventDefault();
     const isTouchEvent = event.type === "touchstart";
-    const startX = isTouchEvent ? event.touches[0].clientX : event.clientX;
-    const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
-    const offsetX = startX - shape.el.getBoundingClientRect().left;
-    const offsetY = startY - shape.el.getBoundingClientRect().top;
+    const offsetX = event.offsetX;
+    const offsetY = event.offsetY;
     function onMove(event) {
         const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
