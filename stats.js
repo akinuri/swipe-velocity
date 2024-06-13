@@ -6,5 +6,6 @@ let stats = {
     vel : {
         mag : qs("#velMag"),
         ang : qs("#velAng"),
+        angIcon : qs("svg"),
     },
 };
