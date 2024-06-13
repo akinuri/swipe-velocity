@@ -1,6 +1,6 @@
 let shape = new Circle(qs("#shape"));
-
 let container = new Rectangle(innerWidth, innerHeight);
+shape.container = container;
 
 on(window, "resize", () => {
     container.width = innerWidth;
