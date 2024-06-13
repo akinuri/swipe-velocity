@@ -21,6 +21,8 @@ function onDragStart(event) {
         y = clamp(y, 0, container.height - shape.radius);
         shape.el.style.left = `${x}px`;
         shape.el.style.top = `${y}px`;
+        stats.pos.x.textContent = x + shape.radius;
+        stats.pos.y.textContent = y + shape.radius;
     }
     function onDragEnd() {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
