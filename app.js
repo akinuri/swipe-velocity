@@ -22,12 +22,9 @@ function onDragStart(event) {
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
         let x = moveX - offsetX;
         let y = moveY - offsetY;
-        x = clamp(x, 0, container.width - shape.radius);
-        y = clamp(y, 0, container.height - shape.radius);
-        shape.el.style.left = `${x}px`;
-        shape.el.style.top = `${y}px`;
-        stats.pos.x.textContent = (x + shape.radius).toFixed(0);
-        stats.pos.y.textContent = (y + shape.radius).toFixed(0);
+        shape.move(x, y);
+        stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
+        stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
 
         const currentTime = performance.now();
         const deltaTime = (currentTime - lastTime) / 1000;
