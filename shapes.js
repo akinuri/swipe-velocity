@@ -1,8 +1,7 @@
 class Circle {
     el = null;
     radius = 0;
-    x = 0;
-    y = 0;
+    pos = new Point();
     container = null;
     dragPosLog = new Stack(2, true);
     constructor(el) {
@@ -11,18 +10,26 @@ class Circle {
     }
     move(x, y) {
         if (this.container) {
-            x = clamp(x, this.container.x, this.container.x + this.container.width - this.radius);
-            y = clamp(y, this.container.y, this.container.y + this.container.height - this.radius);
+            x = clamp(
+                x,
+                this.container.pos.x,
+                this.container.pos.x + this.container.width - this.radius,
+            );
+            y = clamp(
+                y,
+                this.container.pos.y,
+                this.container.pos.y + this.container.height - this.radius,
+            );
         }
-        this.x = x;
-        this.y = y;
-        shape.el.style.left = `${x}px`;
-        shape.el.style.top = `${y}px`;
+        this.pos.x = x;
+        this.pos.y = y;
+        shape.el.style.left = x + "px";
+        shape.el.style.top = y + "px";
     }
     getCenterPos() {
         return {
-            x: this.x + this.radius,
-            y: this.y + this.radius,
+            x: this.pos.x + this.radius,
+            y: this.pos.y + this.radius,
         }
     }
     logDragPos(x, y, time) {
@@ -52,13 +59,12 @@ class Circle {
 }
 
 class Rectangle {
-    x = 0;
-    y = 0;
+    pos = new Point();
     width = 0;
     height = 0;
     constructor(x, y, width, height) {
-        this.x = x;
-        this.y = y;
+        this.pos.x = x;
+        this.pos.y = y;
         this.width = width;
         this.height = height;
     }
