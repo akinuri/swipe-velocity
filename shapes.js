@@ -43,8 +43,8 @@ class Circle {
             mag : 0,
             dir : 0,
         };
-        let last = this.dragPosLog.get(0);
-        let current = this.dragPosLog.get(1);
+        let last = this.dragPosLog.peek(0);
+        let current = this.dragPosLog.peek(1);
         if (last && current) {
             const deltaTime = (current.time - last.time) / 1000;
             const deltaX = current.x - last.x;
