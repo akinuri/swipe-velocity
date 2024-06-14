@@ -21,10 +21,10 @@ function onDragStart(event) {
         let x = moveX - offsetX;
         let y = moveY - offsetY;
         shape.move(x, y);
-        stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
-        stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
         shape.logDragPos(moveX, moveY);
         let vel = shape.calcDragVel();
+        stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
+        stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
         stats.vel.mag.textContent = vel.mag.toFixed(1);
         stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
         stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
