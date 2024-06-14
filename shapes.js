@@ -46,11 +46,15 @@ class Circle {
         let prev = this.dragPosLog.peek(1);
         let current = this.dragPosLog.peek(0);
         if (prev && current) {
+            let velX = 0;
+            let velY = 0;
             const deltaTime = (current.time - prev.time) / 1000;
-            const deltaX = current.x - prev.x;
-            const deltaY = current.y - prev.y;
-            const velX = deltaX / deltaTime;
-            const velY = deltaY / deltaTime;
+            if (deltaTime != 0) {
+                const deltaX = current.x - prev.x;
+                const deltaY = current.y - prev.y;
+                velX = deltaX / deltaTime;
+                velY = deltaY / deltaTime;
+            }
             vel.mag = getMagnitude(velX, velY);
             vel.dir = calcRelAngleDegrees(prev.x, -prev.y, current.x, -current.y);
         }

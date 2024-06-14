@@ -29,9 +29,21 @@ function onDragStart(event) {
         stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
         stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
     }
-    function onDragEnd() {
+    function onDragEnd(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
         off(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd);
+        const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+        const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+        shape.logDragPos(moveX, moveY);
+        let moveElapsed = shape.dragPosLog.peek(0).time - shape.dragPosLog.peek(1).time;
+        const ALLOWED_RELEASE_DELAY = 50;
+        if (moveElapsed > ALLOWED_RELEASE_DELAY) {
+            shape.logDragPos(moveX, moveY);
+            let vel = shape.calcDragVel();
+            stats.vel.mag.textContent = vel.mag.toFixed(1);
+            stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
+            stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
+        }
     }
     on(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
     on(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd, { once: true });
