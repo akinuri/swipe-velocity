@@ -6,14 +6,14 @@ function getMagnitude(x, y) {
     return Math.hypot(x, y);
 }
 
-function calcRelAngleDegrees(originX, originY, targetX, targetY) {
-    return calcAngleDegrees(
+function relAngleFromCoords(originX, originY, targetX, targetY) {
+    return angleFromCoords(
         targetX - originX,
         targetY - originY,
     );
 }
 
-function calcAngleDegrees(x, y) {
+function angleFromCoords(x, y) {
     let rad = Math.atan2(y, x);
     if (rad < 0) rad += 2 * Math.PI;
     return rad2deg(rad);
