@@ -4,7 +4,7 @@ class Circle {
     x = 0;
     y = 0;
     container = null;
-    posLog = new Stack(2, true);
+    dragPosLog = new Stack(2, true);
     constructor(el) {
         this.el = el;
         this.radius = el.clientWidth;
@@ -25,19 +25,19 @@ class Circle {
             y: this.y + this.radius,
         }
     }
-    logPos(x, y, time) {
+    logDragPos(x, y, time) {
         time = time || performance.now();
-        this.posLog.push(
+        this.dragPosLog.push(
             {x, y, time}
         );
     }
-    calcVel() {
+    calcDragVel() {
         let vel = {
             mag : 0,
             dir : 0,
         };
-        let last = this.posLog.get(0);
-        let current = this.posLog.get(1);
+        let last = this.dragPosLog.get(0);
+        let current = this.dragPosLog.get(1);
         if (last && current) {
             const deltaTime = (current.time - last.time) / 1000;
             const deltaX = current.x - last.x;

@@ -14,7 +14,7 @@ function onDragStart(event) {
     const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
     const offsetX = startX - shape.el.getBoundingClientRect().left;
     const offsetY = startY - shape.el.getBoundingClientRect().top;
-    shape.logPos(startX, startY);
+    shape.logDragPos(startX, startY);
     function onMove(event) {
         const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
@@ -23,8 +23,8 @@ function onDragStart(event) {
         shape.move(x, y);
         stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
         stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
-        shape.logPos(moveX, moveY);
-        let vel = shape.calcVel();
+        shape.logDragPos(moveX, moveY);
+        let vel = shape.calcDragVel();
         stats.vel.mag.textContent = vel.mag.toFixed(1);
         stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
         stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
