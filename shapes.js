@@ -8,7 +8,7 @@ class Circle {
         this.el = el;
         this.radius = el.clientWidth;
     }
-    move(x, y) {
+    moveTo(x, y) {
         if (this.container) {
             x = clamp(
                 x,
@@ -23,8 +23,8 @@ class Circle {
         }
         this.pos.x = x;
         this.pos.y = y;
-        shape.el.style.left = x + "px";
-        shape.el.style.top = y + "px";
+        this.el.style.left = x + "px";
+        this.el.style.top = y + "px";
     }
     getCenterPos() {
         return {

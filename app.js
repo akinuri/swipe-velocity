@@ -20,7 +20,7 @@ function onDragStart(event) {
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
         let x = moveX - offsetX;
         let y = moveY - offsetY;
-        shape.move(x, y);
+        shape.moveTo(x, y);
         shape.logDragPos(moveX, moveY);
         let vel = shape.calcDragVel();
         stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
