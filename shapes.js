@@ -38,18 +38,27 @@ class Circle {
             {x, y, time}
         );
     }
-    calcDragVel() {
-        let vel = new Vector();
+    getDragPosDelta() {
         let prev = this.dragPosLog.peek(1);
         let current = this.dragPosLog.peek(0);
+        let delta = {
+            x : 0,
+            y : 0,
+            time : 0,
+        };
         if (prev && current) {
-            const deltaTime = (current.time - prev.time) / 1000;
-            if (deltaTime != 0) {
-                const deltaX = current.x - prev.x;
-                const deltaY = current.y - prev.y;
-                vel.x = deltaX / deltaTime;
-                vel.y = deltaY / deltaTime;
-            }
+            delta.time = (current.time - prev.time) / 1000;
+            delta.x = current.x - prev.x;
+            delta.y = current.y - prev.y;
+        }
+        return delta;
+    }
+    calcDragVel() {
+        let vel = new Vector();
+        let delta = this.getDragPosDelta();
+        if (delta.time != 0) {
+            vel.x = delta.x / delta.time;
+            vel.y = delta.y / delta.time;
         }
         return vel;
     }
