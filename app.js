@@ -22,12 +22,12 @@ function onDragStart(event) {
         let y = moveY - offsetY;
         shape.moveTo(x, y);
         shape.logDragPos(moveX, moveY);
-        let vel = shape.calcDragVel();
+        let dragVel = shape.calcDragVel();
         stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
         stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
-        stats.vel.mag.textContent = vel.mag.toFixed(1);
-        stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
-        stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
+        stats.vel.mag.textContent = dragVel.getMagnitude().toFixed(1);
+        stats.vel.ang.textContent = dragVel.getAngle(-1).toFixed(1) + "°";
+        stats.vel.angIcon.style.setProperty("--rotate", dragVel.getAngle(-1) + "deg");
     }
     function onDragEnd(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
@@ -39,10 +39,10 @@ function onDragStart(event) {
         const ALLOWED_RELEASE_DELAY = 50;
         if (moveElapsed > ALLOWED_RELEASE_DELAY) {
             shape.logDragPos(moveX, moveY);
-            let vel = shape.calcDragVel();
-            stats.vel.mag.textContent = vel.mag.toFixed(1);
-            stats.vel.ang.textContent = vel.dir.toFixed(1) + "°";
-            stats.vel.angIcon.style.setProperty("--rotate", vel.dir + "deg");
+            let dragVel = shape.calcDragVel();
+            stats.vel.mag.textContent = dragVel.getMagnitude().toFixed(1);
+            stats.vel.ang.textContent = dragVel.getAngle(-1).toFixed(1) + "°";
+            stats.vel.angIcon.style.setProperty("--rotate", dragVel.getAngle(-1) + "deg");
         }
     }
     on(document, isTouchEvent ? "touchmove" : "mousemove", onMove);

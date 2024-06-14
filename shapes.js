@@ -39,24 +39,17 @@ class Circle {
         );
     }
     calcDragVel() {
-        let vel = {
-            mag : 0,
-            dir : 0,
-        };
+        let vel = new Vector();
         let prev = this.dragPosLog.peek(1);
         let current = this.dragPosLog.peek(0);
         if (prev && current) {
-            let velX = 0;
-            let velY = 0;
             const deltaTime = (current.time - prev.time) / 1000;
             if (deltaTime != 0) {
                 const deltaX = current.x - prev.x;
                 const deltaY = current.y - prev.y;
-                velX = deltaX / deltaTime;
-                velY = deltaY / deltaTime;
+                vel.x = deltaX / deltaTime;
+                vel.y = deltaY / deltaTime;
             }
-            vel.mag = getMagnitude(velX, velY);
-            vel.dir = calcRelAngleDegrees(prev.x, -prev.y, current.x, -current.y);
         }
         return vel;
     }
