@@ -2,6 +2,8 @@ let shape = new Circle(qs("#shape"));
 let container = new Rectangle(0, 0, innerWidth, innerHeight);
 shape.container = container;
 
+shape.moveTo(innerWidth/2-shape.radius, innerHeight/2-shape.radius);
+
 on(window, "resize", () => {
     container.width = innerWidth;
     container.height = innerHeight;
