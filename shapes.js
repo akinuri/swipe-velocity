@@ -7,7 +7,7 @@ class Circle {
     dragPosLog = new Stack(2, true);
     constructor(el) {
         this.el = el;
-        this.radius = el.clientWidth;
+        this.radius = el.clientWidth / 2;
     }
     move(deltaTime) {
         this.pos.x += this.vel.x * deltaTime;
@@ -20,12 +20,12 @@ class Circle {
             x = clamp(
                 x,
                 this.container.pos.x,
-                this.container.pos.x + this.container.width - this.radius,
+                this.container.pos.x + this.container.width - this.radius * 2,
             );
             y = clamp(
                 y,
                 this.container.pos.y,
-                this.container.pos.y + this.container.height - this.radius,
+                this.container.pos.y + this.container.height - this.radius * 2,
             );
         }
         this.pos.x = x;
@@ -72,9 +72,9 @@ class Circle {
     checkBounds() {
         if (!this.container) return;
         const leftBound = this.container.pos.x;
-        const rightBound = this.container.pos.x + this.container.width - this.radius;
+        const rightBound = this.container.pos.x + this.container.width - this.radius * 2;
         const topBound = this.container.pos.y;
-        const bottomBound = this.container.pos.y + this.container.height - this.radius;
+        const bottomBound = this.container.pos.y + this.container.height - this.radius * 2;
         if (this.pos.x <= leftBound) {
             this.pos.x = leftBound;
             this.vel.x *= -1;
