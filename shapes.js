@@ -2,11 +2,17 @@ class Circle {
     el = null;
     radius = 0;
     pos = new Point();
+    vel = new Vector();
     container = null;
     dragPosLog = new Stack(2, true);
     constructor(el) {
         this.el = el;
         this.radius = el.clientWidth;
+    }
+    move() {
+        this.pos.x += this.vel.x;
+        this.pos.y += this.vel.y;
+        this.moveTo(this.pos.x, this.pos.y);
     }
     moveTo(x, y) {
         if (this.container) {
@@ -59,6 +65,8 @@ class Circle {
         if (delta.time != 0) {
             vel.x = delta.x / delta.time;
             vel.y = delta.y / delta.time;
+            vel.x *= 0.1;
+            vel.y *= 0.1;
         }
         return vel;
     }

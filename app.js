@@ -34,17 +34,22 @@ function onDragStart(event) {
     function onDragEnd(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
         off(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd);
+        let moveDragVel = shape.calcDragVel();
         const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
         shape.logDragPos(moveX, moveY);
+        let endDragVel = shape.calcDragVel();
         let moveElapsed = shape.dragPosLog.peek(0).time - shape.dragPosLog.peek(1).time;
         const ALLOWED_RELEASE_DELAY = 50;
         if (moveElapsed > ALLOWED_RELEASE_DELAY) {
             shape.logDragPos(moveX, moveY);
-            let dragVel = shape.calcDragVel();
-            stats.vel.mag.textContent = dragVel.getMagnitude().toFixed(1);
-            stats.vel.ang.textContent = dragVel.getAngle(-1).toFixed(1) + "°";
-            stats.vel.angIcon.style.setProperty("--rotate", dragVel.getAngle(-1) + "deg");
+            shape.vel = Vector.createFromAngle(0, 0);
+            stats.vel.mag.textContent = endDragVel.getMagnitude().toFixed(1);
+            stats.vel.ang.textContent = endDragVel.getAngle().toFixed(1) + "°";
+            stats.vel.angIcon.style.setProperty("--rotate", endDragVel.dir + "deg");
+        } else {
+            shape.vel = moveDragVel;
+            gameLoop();
         }
     }
     on(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
@@ -55,3 +60,14 @@ on(document, "touchstart", (e) => e.preventDefault(), { passive: false });
 
 on(shape.el, "mousedown", onDragStart, { passive: false });
 on(shape.el, "touchstart", onDragStart, { passive: false });
+
+const FRICTION = 0.5;
+function gameLoop() {
+    shape.vel.multiply(FRICTION);
+    shape.move();
+    if (shape.vel.getMagnitude() > 2) {
+        requestAnimationFrame(gameLoop);
+    } else {
+        shape.vel = Vector.createFromAngle(0, 0);
+    }
+}
