@@ -61,13 +61,25 @@ on(document, "touchstart", (e) => e.preventDefault(), { passive: false });
 on(shape.el, "mousedown", onDragStart, { passive: false });
 on(shape.el, "touchstart", onDragStart, { passive: false });
 
-const FRICTION = 0.5;
+const FRICTION = 0.98;
+let lastFrameTime = 0;
 function gameLoop() {
+    let currentFrameTime = performance.now();
+    if (lastFrameTime == 0) {
+        lastFrameTime = currentFrameTime;
+    }
+    let elapsedFrameTime = (currentFrameTime - lastFrameTime) / 1000;
+    lastFrameTime = currentFrameTime;
+    if (elapsedFrameTime == 0) {
+        requestAnimationFrame(gameLoop);
+        return;
+    }
     shape.vel.multiply(FRICTION);
-    shape.move();
+    shape.move(elapsedFrameTime);
     if (shape.vel.getMagnitude() > 2) {
         requestAnimationFrame(gameLoop);
     } else {
         shape.vel = Vector.createFromAngle(0, 0);
+        lastFrameTime = 0;
     }
 }

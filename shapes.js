@@ -9,9 +9,10 @@ class Circle {
         this.el = el;
         this.radius = el.clientWidth;
     }
-    move() {
-        this.pos.x += this.vel.x;
-        this.pos.y += this.vel.y;
+    move(deltaTime) {
+        this.pos.x += this.vel.x * deltaTime;
+        this.pos.y += this.vel.y * deltaTime;
+        this.checkBounds();
         this.moveTo(this.pos.x, this.pos.y);
     }
     moveTo(x, y) {
@@ -65,10 +66,29 @@ class Circle {
         if (delta.time != 0) {
             vel.x = delta.x / delta.time;
             vel.y = delta.y / delta.time;
-            vel.x *= 0.1;
-            vel.y *= 0.1;
         }
         return vel;
+    }
+    checkBounds() {
+        if (!this.container) return;
+        const leftBound = this.container.pos.x;
+        const rightBound = this.container.pos.x + this.container.width - this.radius;
+        const topBound = this.container.pos.y;
+        const bottomBound = this.container.pos.y + this.container.height - this.radius;
+        if (this.pos.x <= leftBound) {
+            this.pos.x = leftBound;
+            this.vel.x *= -1;
+        } else if (this.pos.x >= rightBound) {
+            this.pos.x = rightBound;
+            this.vel.x *= -1;
+        }
+        if (this.pos.y <= topBound) {
+            this.pos.y = topBound;
+            this.vel.y *= -1;
+        } else if (this.pos.y >= bottomBound) {
+            this.pos.y = bottomBound;
+            this.vel.y *= -1;
+        }
     }
 }
 
