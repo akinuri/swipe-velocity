@@ -24,12 +24,7 @@ function onDragStart(event) {
         let y = moveY - offsetY;
         shape.moveTo(x, y);
         shape.logDragPos(moveX, moveY);
-        let dragVel = shape.calcDragVel();
-        stats.pos.x.textContent = (shape.getCenterPos().x).toFixed(0);
-        stats.pos.y.textContent = (shape.getCenterPos().y).toFixed(0);
-        stats.vel.mag.textContent = dragVel.getMagnitude().toFixed(1);
-        stats.vel.ang.textContent = dragVel.getAngle(-1).toFixed(1) + "°";
-        stats.vel.angIcon.style.setProperty("--rotate", dragVel.getAngle(-1) + "deg");
+        stats.update(shape, shape.calcDragVel());
     }
     function onDragEnd(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
