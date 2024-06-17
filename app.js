@@ -30,17 +30,7 @@ function onDragStart(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
         off(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd);
         let moveDragVel = shape.calcDragVel();
-        const moveX = isTouchEvent ? event.changedTouches[0].clientX : event.clientX;
-        const moveY = isTouchEvent ? event.changedTouches[0].clientY : event.clientY;
-        shape.logDragPos(moveX, moveY);
-        let endDragVel = shape.calcDragVel();
-        let moveElapsed = shape.dragPosLog.peek(0).time - shape.dragPosLog.peek(1).time;
-        const ALLOWED_RELEASE_DELAY = 50;
-        if (moveElapsed > ALLOWED_RELEASE_DELAY) {
-            shape.logDragPos(moveX, moveY);
-            shape.vel = Vector.createFromAngle(0, 0);
-            stats.updateDrag(shape, shape.calcDragVel());
-        } else {
+        if (moveDragVel.getMagnitude() > 0) {
             shape.vel = moveDragVel;
             gameLoop();
         }
