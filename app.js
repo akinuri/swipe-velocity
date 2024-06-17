@@ -24,7 +24,7 @@ function onDragStart(event) {
         let y = moveY - offsetY;
         shape.moveTo(x, y);
         shape.logDragPos(moveX, moveY);
-        stats.update(shape, shape.calcDragVel());
+        stats.updateDrag(shape, shape.calcDragVel());
     }
     function onDragEnd(event) {
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
@@ -39,9 +39,7 @@ function onDragStart(event) {
         if (moveElapsed > ALLOWED_RELEASE_DELAY) {
             shape.logDragPos(moveX, moveY);
             shape.vel = Vector.createFromAngle(0, 0);
-            stats.vel.mag.textContent = endDragVel.getMagnitude().toFixed(1);
-            stats.vel.ang.textContent = endDragVel.getAngle().toFixed(1) + "°";
-            stats.vel.angIcon.style.setProperty("--rotate", endDragVel.dir + "deg");
+            stats.updateDrag(shape, shape.calcDragVel());
         } else {
             shape.vel = moveDragVel;
             gameLoop();
@@ -70,11 +68,13 @@ function gameLoop() {
         return;
     }
     shape.vel.multiply(FRICTION);
+    stats.updateInertia(shape, shape.vel);
     shape.move(elapsedFrameTime);
     if (shape.vel.getMagnitude() > 2) {
         requestAnimationFrame(gameLoop);
     } else {
         shape.vel = Vector.createFromAngle(0, 0);
+        stats.updateInertia(shape, shape.vel);
         lastFrameTime = 0;
     }
 }
