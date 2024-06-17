@@ -56,6 +56,7 @@ on(shape.el, "touchstart", onDragStart, { passive: false });
 
 const FRICTION = 0.98;
 let lastFrameTime = 0;
+let rafId = 0;
 function gameLoop() {
     let currentFrameTime = performance.now();
     if (lastFrameTime == 0) {
@@ -64,14 +65,14 @@ function gameLoop() {
     let elapsedFrameTime = (currentFrameTime - lastFrameTime) / 1000;
     lastFrameTime = currentFrameTime;
     if (elapsedFrameTime == 0) {
-        requestAnimationFrame(gameLoop);
+        rafId = requestAnimationFrame(gameLoop);
         return;
     }
     shape.vel.multiply(FRICTION);
     stats.updateInertia(shape, shape.vel);
     shape.move(elapsedFrameTime);
     if (shape.vel.getMagnitude() > 2) {
-        requestAnimationFrame(gameLoop);
+        rafId = requestAnimationFrame(gameLoop);
     } else {
         shape.vel = Vector.createFromAngle(0, 0);
         stats.updateInertia(shape, shape.vel);
