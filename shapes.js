@@ -42,16 +42,16 @@ class Circle {
     logDragPos(x, y, time) {
         time = time || performance.now();
         this.dragPosLog.push(
-            {x, y, time}
+            { x, y, time }
         );
     }
     getDragPosDelta() {
         let prev = this.dragPosLog.peek(1);
         let current = this.dragPosLog.peek(0);
         let delta = {
-            x : 0,
-            y : 0,
-            time : 0,
+            x: 0,
+            y: 0,
+            time: 0,
         };
         if (prev && current) {
             delta.time = (current.time - prev.time) / 1000;
