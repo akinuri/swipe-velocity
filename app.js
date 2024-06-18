@@ -17,6 +17,9 @@ function onDragStart(event) {
     const offsetX = startX - shape.el.getBoundingClientRect().left;
     const offsetY = startY - shape.el.getBoundingClientRect().top;
     shape.logDragPos(startX, startY);
+    let moveTimeoutHandle = null;
+    const ALLOWED_RELEASE_DELAY = 50;
+    let isDragEnded = false;
     function onMove(event) {
         const moveX = isTouchEvent ? event.touches[0].clientX : event.clientX;
         const moveY = isTouchEvent ? event.touches[0].clientY : event.clientY;
@@ -25,8 +28,16 @@ function onDragStart(event) {
         shape.moveTo(x, y);
         shape.logDragPos(moveX, moveY);
         stats.updateDrag(shape, shape.calcDragVel());
+        clearTimeout(moveTimeoutHandle);
+        moveTimeoutHandle = setTimeout(() => {
+            if (isDragEnded) return;
+            shape.logDragPos(moveX, moveY);
+            shape.vel = Vector.createFromAngle(0, 0);
+            stats.updateDrag(shape, shape.calcDragVel());
+        }, ALLOWED_RELEASE_DELAY);
     }
     function onDragEnd(event) {
+        isDragEnded = true;
         off(document, isTouchEvent ? "touchmove" : "mousemove", onMove);
         off(document, isTouchEvent ? "touchend" : "mouseup", onDragEnd);
         let moveDragVel = shape.calcDragVel();
